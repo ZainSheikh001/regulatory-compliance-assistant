@@ -10,17 +10,23 @@ def is_section_heading(line):
 
 
 def chunk_by_section(text):
-    """One chunk per lettered section (A to K)."""
+    """One chunk per lettered section (A to K), then one chunk per annex (A to D)."""
     chunks = []
     current = None
+    in_annexes = False
 
     for line in text.split("\n"):
         line = line.strip()
 
         if line.startswith("Annex - A"):
-            break
+            in_annexes = True
 
-        if is_section_heading(line):
+        if in_annexes and line.startswith("Annex - "):
+            if current is not None:
+                chunks.append(current)
+            current = {"section": "Annex " + line[8], "text": line, "source": SOURCE, "date": DATE}
+
+        elif not in_annexes and is_section_heading(line):
             if current is not None:
                 chunks.append(current)
             current = {"section": "Section " + line[0], "text": line, "source": SOURCE, "date": DATE}
