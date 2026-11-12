@@ -24,12 +24,12 @@ def chunk_by_section(text):
         if in_annexes and line.startswith("Annex - "):
             if current is not None:
                 chunks.append(current)
-            current = {"section": "Annex " + line[8], "text": line, "source": SOURCE, "date": DATE}
+            current = {"section": "Annex " + line[8], "heading": line, "text": line, "source": SOURCE, "date": DATE}
 
         elif not in_annexes and is_section_heading(line):
             if current is not None:
                 chunks.append(current)
-            current = {"section": "Section " + line[0], "text": line, "source": SOURCE, "date": DATE}
+            current = {"section": "Section " + line[0], "heading": line, "text": line, "source": SOURCE, "date": DATE}
 
         elif line != "" and current is not None:
             current["text"] += " " + line
@@ -39,9 +39,32 @@ def chunk_by_section(text):
     return chunks
 
 
+def split_big_chunks(chunks, size, overlap):
+    """Cut any chunk longer than `size` into overlapping pieces. Each piece keeps its section."""
+    pieces = []
+    for chunk in chunks:
+        text = chunk["text"]
+        part = 1
+        for start in range(0, len(text), size - overlap):
+            piece = text[start:start + size]
+            pieces.append({
+                "section": chunk["section"],
+                "part": part,
+                "text": chunk["heading"] + " > " + piece,
+                "source": chunk["source"],
+                "date": chunk["date"],
+            })
+            part += 1
+            if start + size >= len(text):
+                break
+    return pieces
+
+
 if __name__ == "__main__":
     text = remove_footers(load_text(PDF_PATH, 2))
-    chunks = chunk_by_section(text)
-    print("Number of chunks:", len(chunks))
+    sections = chunk_by_section(text)
+    chunks = split_big_chunks(sections, 800, 200)
+    print("Sections:", len(sections))
+    print("Chunks after splitting:", len(chunks))
     for c in chunks:
-        print(c["section"], "|", len(c["text"]), "characters |", c["text"][:60])
+        print(c["section"], "part", c["part"], "|", len(c["text"]), "characters")

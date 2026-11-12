@@ -1,1 +1,5 @@
 pypdf
+sentence-transformers
+groq
+pydantic
+python-dotenv
