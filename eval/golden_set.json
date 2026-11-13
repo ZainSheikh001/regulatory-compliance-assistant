@@ -1,0 +1,16 @@
+[
+  {"id": "q01", "question": "How many working days does a bank have to decide on an account opening request?", "expected_section": "Section I", "must_contain": [["2", "two"], ["5", "five"]], "answerable": true},
+  {"id": "q02", "question": "If a bank declines an account opening request, how must it tell the customer the reason?", "expected_section": "Section I", "must_contain": [["writing", "written"]], "answerable": true},
+  {"id": "q03", "question": "Who is eligible for digital onboarding?", "expected_section": "Section C", "must_contain": [["CNIC"], ["NICOP"]], "answerable": true},
+  {"id": "q04", "question": "What is the maximum credit balance allowed in an Asaan Account?", "expected_section": "Annex D", "must_contain": [["3,000,000", "3 million", "3000000"]], "answerable": true},
+  {"id": "q05", "question": "What is the maximum credit balance of a Branchless Banking Account?", "expected_section": "Annex D", "must_contain": [["1,000,000", "1 million", "1000000"]], "answerable": true},
+  {"id": "q06", "question": "For how many days can a customer resume a saved online account opening session?", "expected_section": "Section J", "must_contain": [["30"]], "answerable": true},
+  {"id": "q07", "question": "Within how long must a bank fully comply with an audit report on its digital onboarding arrangements?", "expected_section": "Section K", "must_contain": [["three months", "3 months"]], "answerable": true},
+  {"id": "q08", "question": "What location information must banks record during digital onboarding?", "expected_section": "Section F", "must_contain": [["geo-location", "geolocation", "geo location", "IP"]], "answerable": true},
+  {"id": "q09", "question": "For which customers must a bank conduct Enhanced Due Diligence?", "expected_section": "Section G", "must_contain": [["high"], ["risk"]], "answerable": true},
+  {"id": "q10", "question": "If a customer opens an account with an expired ID document, within how long must the bank obtain the renewed ID?", "expected_section": "Section D", "must_contain": [["3 months", "three months", "03 months"]], "answerable": true},
+  {"id": "q11", "question": "What ownership percentage makes someone a beneficial owner of an entity customer?", "expected_section": "Section E", "must_contain": [["20%", "20 percent"]], "answerable": true},
+  {"id": "q12", "question": "Which authority is biometric verification conducted from?", "expected_section": "Section F", "must_contain": [["NADRA"]], "answerable": true},
+  {"id": "q13", "question": "What is the interest rate on savings accounts?", "expected_section": null, "must_contain": [], "answerable": false},
+  {"id": "q14", "question": "What is the corporate income tax rate in Pakistan?", "expected_section": null, "must_contain": [], "answerable": false}
+]
