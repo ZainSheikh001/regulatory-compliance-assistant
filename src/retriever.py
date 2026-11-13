@@ -1,35 +1,30 @@
-from sentence_transformers import SentenceTransformer, util
-from load_pdf import PDF_PATH, load_text, remove_footers
-from chunker import chunk_by_section, split_big_chunks
+import chromadb
+from sentence_transformers import SentenceTransformer
 
 MODEL_NAME = "all-MiniLM-L6-v2"
+DB_PATH = "chroma_db"
+COLLECTION = "regulations"
 
-# ---------- INDEXING: done once, when this file loads ----------
 embedder = SentenceTransformer(MODEL_NAME)
-sections = chunk_by_section(remove_footers(load_text(PDF_PATH, 2)))
-chunks = split_big_chunks(sections, 800, 200)
-
-chunk_texts = []
-for chunk in chunks:
-    chunk_texts.append(chunk["text"])
-chunk_vecs = embedder.encode(chunk_texts)
+client = chromadb.PersistentClient(path=DB_PATH)
+collection = client.get_collection(COLLECTION)
 
 
-# ---------- RETRIEVAL: done for every question ----------
 def retrieve(question, top_k):
-    """Return the top_k chunks whose meaning is closest to the question."""
-    q_vec = embedder.encode(question)
-    scores = util.cos_sim(q_vec, chunk_vecs)[0]
+    """Return the top_k chunks whose meaning is closest to the question (from ChromaDB)."""
+    q_vec = embedder.encode(question).tolist()
+    res = collection.query(query_embeddings=[q_vec], n_results=top_k)
+
     results = []
-    for i in range(len(chunks)):
+    for i in range(len(res["ids"][0])):
+        meta = res["metadatas"][0][i]
         results.append({
-            "score": round(float(scores[i]), 3),
-            "section": chunks[i]["section"],
-            "part": chunks[i]["part"],
-            "text": chunks[i]["text"],
+            "score": round(1 - res["distances"][0][i], 3),
+            "section": meta["section"],
+            "part": meta["part"],
+            "text": res["documents"][0][i],
         })
-    results = sorted(results, key=lambda r: r["score"], reverse=True)
-    return results[:top_k]
+    return results
 
 
 if __name__ == "__main__":

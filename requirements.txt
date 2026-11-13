@@ -3,3 +3,4 @@ sentence-transformers
 groq
 pydantic
 python-dotenv
+chromadb
