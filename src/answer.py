@@ -8,7 +8,6 @@ client = Groq()
 
 LLM_MODEL = "openai/gpt-oss-20b"
 TOP_K = 5
-
 RULES = (
     "You are a regulatory compliance assistant. "
     "Answer ONLY using the context provided by the user. "

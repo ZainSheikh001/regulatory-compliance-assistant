@@ -1,5 +1,6 @@
 import json
 import sys
+import unicodedata
 
 sys.path.insert(0, "src")
 from answer import answer, CiteAnswer, build_context, TOP_K
@@ -8,13 +9,20 @@ from retriever import retrieve
 GOLDEN_PATH = "eval/golden_set.json"
 
 
+def normalize(text):
+    """Turn look-alike characters (special spaces, hyphens) into plain ones, then lowercase."""
+    text = unicodedata.normalize("NFKC", text)
+    text = text.replace("\u2010", "-").replace("\u2011", "-")
+    return text.lower()
+
+
 def contains_all(answer_text, must_contain):
     """True if the answer has at least one word from EVERY group in must_contain."""
-    text = answer_text.lower()
+    text = normalize(answer_text)
     for group in must_contain:
         found = False
         for word in group:
-            if word.lower() in text:
+            if normalize(word) in text:
                 found = True
         if not found:
             return False
@@ -38,7 +46,6 @@ for item in golden:
     except Exception:
         result = None
 
-    # 1. Retrieval, two ways: right SECTION name? right TEXT actually retrieved?
     if item["answerable"]:
         answerable_count += 1
         section_hit = item["expected_section"] in allowed
@@ -52,7 +59,6 @@ for item in golden:
         section_hit = None
         context_hit = None
 
-    # 2. Answer: is it correct?
     if result is None:
         correct = False
     elif item["answerable"]:
@@ -72,6 +78,9 @@ for item in golden:
           "| answer:", "OK" if correct else "WRONG", "| guard:", verdict)
     if not correct and result is not None:
         print("      got:", result.answer)
+    if verdict != "Valid":
+        print("      raw:", raw)
+        print("      allowed:", allowed)
 
 total = len(golden)
 print("=" * 70)

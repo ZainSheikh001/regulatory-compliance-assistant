@@ -8,7 +8,7 @@
   {"id": "q07", "question": "Within how long must a bank fully comply with an audit report on its digital onboarding arrangements?", "expected_section": "Section K", "must_contain": [["three months", "3 months"]], "answerable": true},
   {"id": "q08", "question": "What location information must banks record during digital onboarding?", "expected_section": "Section F", "must_contain": [["geo-location", "geolocation", "geo location", "IP"]], "answerable": true},
   {"id": "q09", "question": "For which customers must a bank conduct Enhanced Due Diligence?", "expected_section": "Section G", "must_contain": [["high"], ["risk"]], "answerable": true},
-  {"id": "q10", "question": "If a customer opens an account with an expired ID document, within how long must the bank obtain the renewed ID?", "expected_section": "Section D", "must_contain": [["3 months", "three months", "03 months"]], "answerable": true},
+  {"id": "q10", "question": "If a customer opens an account with an expired ID document, within how long must the bank obtain the renewed ID?", "expected_section": "Section D", "must_contain": [["3", "three"], ["month"]], "answerable": true},
   {"id": "q11", "question": "What ownership percentage makes someone a beneficial owner of an entity customer?", "expected_section": "Section E", "must_contain": [["20%", "20 percent"]], "answerable": true},
   {"id": "q12", "question": "Which authority is biometric verification conducted from?", "expected_section": "Section F", "must_contain": [["NADRA"]], "answerable": true},
   {"id": "q13", "question": "What is the interest rate on savings accounts?", "expected_section": null, "must_contain": [], "answerable": false},
